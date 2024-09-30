@@ -1,0 +1,25 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Order{% endblock %}
+
+{% block content %}
+<h2>Order Form</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="customer_name">Name:</label>
+    <input type="text" id="customer_name" name="customer_name" required><br>
+
+    <h3>Menu Items</h3>
+    <input type="checkbox" name="menu_items" value="Pizza"> Pizza - $10 <br>
+    <input type="checkbox" name="menu_items" value="Pasta"> Pasta - $12 <br>
+    <input type="checkbox" name="menu_items" value="Burger"> Burger - $8 <br>
+    <input type="checkbox" name="menu_items" value="Salad"> Salad - $7 <br>
+
+    <h3>Daily Special: {{ daily_special }}</h3>
+
+    <label for="instructions">Special Instructions:</label>
+    <textarea id="instructions" name="instructions"></textarea><br>
+
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

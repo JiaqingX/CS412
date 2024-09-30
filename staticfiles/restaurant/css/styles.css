@@ -1,0 +1,136 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+h1, h2, h3 {
+    color: #333;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Header and Navigation */
+header {
+    background-color: #FF6F61;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Main Content Area */
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table for Hours of Operation */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #FF6F61;
+    color: white;
+}
+
+/* Forms */
+form {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Submit Button */
+input[type="submit"] {
+    background-color: #FF6F61;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #e55d53;
+}
+
+/* Confirmation Page */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul li {
+    padding: 10px 0;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #FF6F61;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
