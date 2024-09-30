@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #e0f7ff; /* 设置浅蓝色背景 */
     color: #333;
 }
 
@@ -15,7 +15,7 @@ h1, h2, h3 {
 
 /* Header and Navigation */
 header {
-    background-color: #FF6F61;
+    background-color: #61c0ff; /* 修改成浅蓝色 */
     color: white;
     padding: 20px 0;
     text-align: center;
@@ -52,6 +52,14 @@ main {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Centering Images */
+img {
+    display: block;
+    margin: 20px auto; /* 将图片水平居中 */
+    max-width: 100%; /* 防止图片溢出容器 */
+    height: auto;
+}
+
 /* Table for Hours of Operation */
 table {
     width: 100%;
@@ -81,21 +89,25 @@ label {
     font-weight: bold;
 }
 
-input[type="text"], input[type="email"], textarea {
+/* Ensure all input fields have the same size */
+input[type="text"], input[type="email"], input[type="tel"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-input[type="checkbox"] {
-    margin-right: 10px;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+    font-size: 16px; /* Ensures consistency in font size */
 }
 
 textarea {
     height: 100px;
     resize: vertical;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 /* Submit Button */
@@ -133,4 +145,3 @@ footer {
     bottom: 0;
     width: 100%;
 }
-

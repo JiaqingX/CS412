@@ -22,3 +22,15 @@ urlpatterns = [
     path('', include('quotes.urls')),
     path('restaurant/', include('restaurant.urls')),
 ]
+
+
+from django.contrib import admin
+from django.urls import path, include
+from restaurant import views as restaurant_views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),  # Admin panel
+    path('', restaurant_views.main, name='main'),  # Set restaurant as the default homepage
+    path('restaurant/', include('restaurant.urls')),  # Restaurant application URL patterns
+    path('quotes/', include('quotes.urls')),  # Quotes application URL patterns
+]

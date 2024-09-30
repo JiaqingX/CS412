@@ -5,12 +5,30 @@
 {% block content %}
 <h2>Order Confirmation</h2>
 <p>Thank you {{ customer_name }} for your order!</p>
+<p>Your contact information:</p>
+<ul>
+    <li>Phone: {{ customer_phone }}</li>
+    <li>Email: {{ customer_email }}</li>
+</ul>
+
 <p>Your items:</p>
 <ul>
     {% for item in items %}
     <li>{{ item }}</li>
     {% endfor %}
 </ul>
+
+{% if toppings %}
+<p>Your toppings:</p>
+<ul>
+    {% for topping in toppings %}
+    <li>{{ topping }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<p>Special Instructions: {{ instructions }}</p>
+
 <p>Total: ${{ total_price }}</p>
 <p>Ready at: {{ ready_time }}</p>
 {% endblock %}

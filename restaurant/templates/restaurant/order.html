@@ -6,20 +6,63 @@
 <h2>Order Form</h2>
 <form method="post" action="{% url 'confirmation' %}">
     {% csrf_token %}
+    
+    <!-- Customer Information -->
+    <h3>Customer Information</h3>
     <label for="customer_name">Name:</label>
     <input type="text" id="customer_name" name="customer_name" required><br>
 
+    <label for="customer_phone">Phone:</label>
+    <input type="tel" id="customer_phone" name="customer_phone" required><br>
+
+    <label for="customer_email">Email:</label>
+    <input type="email" id="customer_email" name="customer_email" required><br>
+
+    <!-- Menu Items with Prices -->
     <h3>Menu Items</h3>
-    <input type="checkbox" name="menu_items" value="Pizza"> Pizza - $10 <br>
-    <input type="checkbox" name="menu_items" value="Pasta"> Pasta - $12 <br>
-    <input type="checkbox" name="menu_items" value="Burger"> Burger - $8 <br>
-    <input type="checkbox" name="menu_items" value="Salad"> Salad - $7 <br>
+    
+    <!-- Chirashi Don with toppings as options -->
+    <label>
+        <input type="checkbox" name="menu_items" value="Chirashi Don"> Chirashi Don - $18
+        <input type="hidden" name="prices_Chirashi Don" value="18">
+    </label>
+    <br>
+    <div style="margin-left: 20px;">
+        <label><input type="checkbox" name="toppings" value="Extra Fish"> Extra Fish - $5</label><br>
+        <label><input type="checkbox" name="toppings" value="Wasabi"> Wasabi - $2</label><br>
+    </div>
 
+    <!-- Okonomiyaki -->
+    <label>
+        <input type="checkbox" name="menu_items" value="Okonomiyaki"> Okonomiyaki - $15
+        <input type="hidden" name="prices_Okonomiyaki" value="15">
+    </label><br>
+
+    <!-- Zaru Soba -->
+    <label>
+        <input type="checkbox" name="menu_items" value="Zaru Soba"> Zaru Soba - $12
+        <input type="hidden" name="prices_Zaru Soba" value="12">
+    </label><br>
+
+    <!-- Agedashi Tofu  -->
+    <label>
+        <input type="checkbox" name="menu_items" value="Agedashi Tofu"> Agedashi Tofu - $8
+        <input type="hidden" name="prices_Agedashi Tofu" value="8">
+    </label><br>
+
+    <!-- Daily Special -->
     <h3>Daily Special: {{ daily_special }}</h3>
+    <label>
+        <input type="checkbox" name="menu_items" value="{{ daily_special }}"> {{ daily_special }} - $15
+        <input type="hidden" name="prices_{{ daily_special }}" value="15">
+    </label><br>
 
-    <label for="instructions">Special Instructions:</label>
+    <!-- Special Instructions -->
+    <h3>Special Instructions</h3>
+    <label for="instructions">Please enter any special instructions:</label><br>
     <textarea id="instructions" name="instructions"></textarea><br>
 
-    <input type="submit" value="Submit">
+    <!-- Submit Button -->
+    <input type="submit" value="Submit Order">
 </form>
 {% endblock %}
