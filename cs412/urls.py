@@ -26,12 +26,13 @@ urlpatterns = [
 
 from django.contrib import admin
 from django.urls import path, include
-from restaurant import views as restaurant_views
+from mini_fb import views as mini_fb_views  
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # Admin panel
-    path('', restaurant_views.main, name='main'),  # Set restaurant as the default homepage
+    path('', mini_fb_views.ShowAllProfilesView.as_view(), name='home'), 
     path('restaurant/', include('restaurant.urls')),  # Restaurant application URL patterns
     path('quotes/', include('quotes.urls')),  # Quotes application URL patterns
-    path('mini_fb/', include('mini_fb.urls')), #  path to include the mini_fb app’s URLs
+    path('mini_fb/', include('mini_fb.urls')),  # Mini Facebook app URL patterns
 ]
+
