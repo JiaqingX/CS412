@@ -33,4 +33,5 @@ urlpatterns = [
     path('', restaurant_views.main, name='main'),  # Set restaurant as the default homepage
     path('restaurant/', include('restaurant.urls')),  # Restaurant application URL patterns
     path('quotes/', include('quotes.urls')),  # Quotes application URL patterns
+    path('mini_fb/', include('mini_fb.urls')), #  path to include the mini_fb app’s URLs
 ]
