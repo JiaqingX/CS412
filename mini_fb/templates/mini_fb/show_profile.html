@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile-details">
+    <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+    <img src="{{ profile.profile_image_url }}" alt="{{ profile.first_name }}'s profile image" style="width:400px;">
+    <p><strong>City:</strong> {{ profile.city }}</p>
+</div>
+
+<h3>Status Messages</h3>
+<ul class="status-messages">
+    {% for message in profile.get_status_messages %}
+    <li>
+        <strong>{{ message.timestamp|date:"M d, Y H:i" }}:</strong> {{ message.message }}
+    </li>
+    {% empty %}
+    <li>No status messages yet.</li>
+    {% endfor %}
+</ul>
+
+
+<h3>Post a New Status Message</h3>
+<form method="post" action="{% url 'create_status' profile.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Post Message</button>
+</form>
+
+<a href="{% url 'show_all_profiles' %}">Back to all profiles</a>
+{% endblock %}
