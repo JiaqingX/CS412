@@ -8,11 +8,45 @@ body {
 header {
     background-color: #3b5998;
     color: white;
-    padding: 15px;
+    padding: 20px;
     text-align: center;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
 }
+
+nav {
+    background-color: #ffffff;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex; 
+    gap: 20px; 
+}
+
+nav ul li {
+    display: inline; 
+}
+
+nav a {
+    color: #3b5998;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #e9ebee;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #dfe3ee;
+}
+
 
 .container {
     max-width: 1200px;
@@ -25,6 +59,8 @@ header {
     flex-wrap: wrap;
     justify-content: space-around;
     gap: 20px;
+    max-width: 1200px; 
+    margin: 0 auto; 
 }
 
 .profile-card {
@@ -35,12 +71,20 @@ header {
     width: 200px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; 
+}
+
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .profile-card img {
     border-radius: 8px;
-    width: 100%;
-    height: auto;
+    width: 150px; 
+    height: 200px; 
+    object-fit: cover; 
     margin-bottom: 10px;
 }
 
@@ -60,4 +104,33 @@ footer {
     padding: 10px;
     background-color: #3b5998;
     color: white;
+}
+
+/* General button styling */
+button, .button-link {
+    background-color: #3b5998; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 10px; 
+}
+
+button:hover, .button-link:hover {
+    background-color: #2d4373;
+}
+
+/* Right-align the buttons */
+.profile-actions {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 20px;
+}
+
+.profile-actions a {
+    margin-left: 10px; 
 }

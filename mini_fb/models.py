@@ -1,5 +1,7 @@
 from django.db import models
+from django.utils import timezone
 
+# Profile model
 class Profile(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -21,3 +23,15 @@ class StatusMessage(models.Model):
 
     def __str__(self):
         return f'{self.message[:20]}...'
+
+    def get_images(self):
+        return self.images.all().order_by('timestamp')
+
+# Image model
+class Image(models.Model):
+    image_file = models.ImageField(upload_to='images/')
+    timestamp = models.DateTimeField(default=timezone.now)
+    status_message = models.ForeignKey('StatusMessage', on_delete=models.CASCADE, related_name='images')
+
+    def __str__(self):
+        return f"Image for {self.status_message} at {self.timestamp}"
