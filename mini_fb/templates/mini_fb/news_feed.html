@@ -1,0 +1,14 @@
+<h2>News Feed</h2>
+<ul>
+    {% for status in profile.get_news_feed %}
+        <li>
+            <strong>{{ status.profile.first_name }} {{ status.profile.last_name }}</strong>:
+            {{ status.message }}
+            <br>
+            <small>{{ status.timestamp|date:"M d, Y H:i" }}</small>
+        </li>
+    {% empty %}
+        <li>No status updates yet.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'show_profile' profile.pk %}">Back to Profile</a>

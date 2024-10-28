@@ -119,3 +119,39 @@ class UpdateProfileView(UpdateView):
     
     def get_success_url(self):
         return reverse('show_profile', kwargs={'pk': self.object.pk})
+
+from django.shortcuts import redirect
+from django.views import View
+
+class CreateFriendView(View):
+    def dispatch(self, request, *args, **kwargs):
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        other_profile = Profile.objects.get(pk=self.kwargs['other_pk'])
+        profile.add_friend(other_profile)
+        return redirect('show_profile', pk=profile.pk)
+
+from django.views.generic import DetailView
+from .models import Profile
+
+class ShowFriendSuggestionsView(DetailView):
+    model = Profile
+    template_name = 'mini_fb/friend_suggestions.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+        context['friend_suggestions'] = profile.get_friend_suggestions()
+        return context
+
+from django.views.generic import DetailView
+from .models import Profile
+
+class ShowNewsFeedView(DetailView):
+    model = Profile
+    template_name = 'mini_fb/news_feed.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+        context['news_feed'] = profile.get_news_feed()  
+        return context

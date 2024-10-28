@@ -7,6 +7,33 @@
     <p><strong>City:</strong> {{ profile.city }}</p>
 </div>
 
+<!-- Display friends -->
+<h3>Friends</h3>
+<ul class="friends-list">
+    {% for friend in profile.get_friends %}
+    <li>
+        <a href="{% url 'show_profile' friend.pk %}">{{ friend.first_name }} {{ friend.last_name }}</a>
+    </li>
+    {% empty %}
+    <li>No friends yet.</li>
+    {% endfor %}
+</ul>
+
+<!-- Add Friend button (only shown if viewing another profile and if user has a profile) -->
+{% if request.user.is_authenticated and request.user.profile and profile != request.user.profile %}
+    <a href="{% url 'add_friend' request.user.profile.pk profile.pk %}" class="button-link">Add Friend</a>
+{% endif %}
+
+<!-- Link to Friend Suggestions page -->
+<div class="profile-actions">
+    <a href="{% url 'friend_suggestions' profile.pk %}" class="button-link">Friend Suggestions</a>
+</div>
+
+<!-- Link to News Feed page -->
+<div class="profile-actions">
+    <a href="{% url 'news_feed' profile.pk %}" class="button-link">View News Feed</a>
+</div>
+
 <!-- Display status messages and associated images -->
 <h3>Status Messages</h3>
 <ul class="status-messages">
