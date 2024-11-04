@@ -12,8 +12,8 @@
     <!-- Buttons available only for the profile owner -->
     <div class="profile-actions">
         <a href="{% url 'update_profile' profile.pk %}" class="button-link">Update Profile</a>
-        <a href="{% url 'friend_suggestions' profile.pk %}" class="button-link">Friend Suggestions</a>
-        <a href="{% url 'news_feed' profile.pk %}" class="button-link">View News Feed</a>
+        <a href="{% url 'friend_suggestions_with_pk' profile.pk %}" class="button-link">Friend Suggestions</a>
+        <a href="{% url 'news_feed_with_pk' profile.pk %}" class="button-link">View News Feed</a>
     </div>
 
     <!-- Form to post a new status message -->
