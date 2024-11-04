@@ -17,6 +17,6 @@ urlpatterns = [
     path('profile/<int:pk>/add_friend/<int:other_pk>/', CreateFriendView.as_view(), name='add_friend'),
     path('profile/<int:pk>/friend_suggestions/', ShowFriendSuggestionsView.as_view(), name='friend_suggestions'),
     path('profile/<int:pk>/news_feed/', ShowNewsFeedView.as_view(), name='news_feed'),
-    path('login/', auth_views.LoginView.as_view(template_name='mini_fb/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='mini_fb/login.html', redirect_authenticated_user=True, extra_context={'next': '/mini_fb/'}), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='mini_fb/logged_out.html'), name='logout'),
 ]

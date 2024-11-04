@@ -19,6 +19,15 @@ class ShowProfilePageView(DetailView):
     template_name = 'mini_fb/show_profile.html'
     context_object_name = 'profile'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Check if the user is authenticated and if they are viewing their own profile
+        if self.request.user.is_authenticated and self.request.user == self.object.user:
+            context['form'] = CreateStatusMessageForm()  # Pass the CreateStatusMessageForm to the template
+        else:
+            context['not_owner'] = True  # Add a flag for non-owners
+        return context
+
 # Create new profile
 class CreateProfileView(View):
     def get(self, request):
@@ -34,12 +43,12 @@ class CreateProfileView(View):
         profile_form = CreateProfileForm(request.POST)
         
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()  
+            user = user_form.save()
             profile = profile_form.save(commit=False)
-            profile.user = user 
+            profile.user = user  # Link the user to the profile
             profile.save()
-            login(request, user)  
-            return redirect('show_all_profiles')
+            login(request, user)  # Log the user in immediately after signup
+            return redirect('show_profile', pk=profile.pk)
         
         return render(request, 'mini_fb/create_profile_form.html', {
             'user_form': user_form,
@@ -54,6 +63,8 @@ class CreateStatusMessageView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        if self.request.user != profile.user:
+            return redirect('show_profile', pk=profile.pk)  # Redirect if not the owner
         sm = form.save(commit=False)
         sm.profile = profile
         sm.save()
@@ -62,12 +73,6 @@ class CreateStatusMessageView(LoginRequiredMixin, CreateView):
             image = Image(status_message=sm, image_file=f)
             image.save()
         return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
-        context['profile'] = profile
-        return context
 
     def get_success_url(self):
         return reverse_lazy('show_profile', kwargs={'pk': self.object.profile.pk})
@@ -95,15 +100,19 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
     form_class = UpdateProfileForm
     template_name = 'mini_fb/update_profile_form.html'
 
+    def get_object(self):
+        return get_object_or_404(Profile, user=self.request.user)
+
     def get_success_url(self):
         return reverse('show_profile', kwargs={'pk': self.object.pk})
 
 # Add friend view
 class CreateFriendView(LoginRequiredMixin, View):
     def dispatch(self, request, *args, **kwargs):
-        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
-        other_profile = get_object_or_404(Profile, pk=self.kwargs['other_pk'])
-        profile.add_friend(other_profile)
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        other_profile = Profile.objects.get(pk=self.kwargs['other_pk'])
+        if request.user == profile.user:
+            profile.add_friend(other_profile)
         return redirect('show_profile', pk=profile.pk)
 
 # Friend suggestions view
