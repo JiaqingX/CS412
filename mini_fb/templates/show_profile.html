@@ -3,39 +3,49 @@
 {% block content %}
 <div class="profile-details">
     <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
-    <img src="{{ profile.profile_image_url }}" alt="{{ profile.first_name }}'s profile image" style="width:400px;">
+    <img src="{{ profile.profile_image_url }}" alt="{{ profile.first_name }}'s profile image" style="width: 400px;">
     <p><strong>City:</strong> {{ profile.city }}</p>
+    <p><strong>Email:</strong> {{ profile.email }}</p>
 </div>
 
+{% if user.is_authenticated and user.profile == profile %}
+    <!-- Buttons available only for the profile owner -->
+    <div class="profile-actions">
+        <a href="{% url 'update_profile' %}" class="button-link">Update Profile</a>
+        <a href="{% url 'friend_suggestions' profile.pk %}" class="button-link">Friend Suggestions</a>
+        <a href="{% url 'news_feed' profile.pk %}" class="button-link">View News Feed</a>
+    </div>
+
+    <!-- Form to post a new status message -->
+    <h3>Post a New Status Message</h3>
+    <form method="post" action="{% url 'create_status' profile.pk %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button-primary">Post Message</button>
+    </form>
+{% else %}
+    <!-- Message for non-owners viewing this profile -->
+    <p><strong>NOT YOUR PAGE</strong></p>
+    <p><strong>CANNOT POST STATUS OR UPDATE</strong></p>
+{% endif %}
+
 <!-- Display friends -->
-<h3>Friends</h3>
+<h3>{{ profile.first_name }}'s friends</h3>
 <ul class="friends-list">
     {% for friend in profile.get_friends %}
-    <li>
-        <a href="{% url 'show_profile' friend.pk %}">{{ friend.first_name }} {{ friend.last_name }}</a>
+    <li style="display: flex; align-items: center; margin-bottom: 10px;">
+        <a href="{% url 'show_profile' friend.pk %}">
+            <img src="{{ friend.profile_image_url }}" alt="{{ friend.first_name }}'s profile image" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+            {{ friend.first_name }} {{ friend.last_name }}
+        </a>
     </li>
     {% empty %}
     <li>No friends yet.</li>
     {% endfor %}
 </ul>
 
-<!-- Add Friend button (only shown if viewing another profile and if user has a profile) -->
-{% if request.user.is_authenticated and request.user.profile and profile != request.user.profile %}
-    <a href="{% url 'add_friend' request.user.profile.pk profile.pk %}" class="button-link">Add Friend</a>
-{% endif %}
-
-<!-- Link to Friend Suggestions page -->
-<div class="profile-actions">
-    <a href="{% url 'friend_suggestions' profile.pk %}" class="button-link">Friend Suggestions</a>
-</div>
-
-<!-- Link to News Feed page -->
-<div class="profile-actions">
-    <a href="{% url 'news_feed' profile.pk %}" class="button-link">View News Feed</a>
-</div>
-
 <!-- Display status messages and associated images -->
-<h3>Status Messages</h3>
+<h3>{{ profile.first_name }}'s Status Messages</h3>
 <ul class="status-messages">
     {% for message in profile.get_status_messages %}
     <li>
@@ -44,30 +54,27 @@
         <!-- Display associated images for this status message -->
         <div class="status-images">
             {% for img in message.get_images %}
-            <img src="{{ img.image_file.url }}" alt="Image for {{ message.message }}" style="width:200px;">
+            <img src="{{ img.image_file.url }}" alt="Image for {{ message.message }}" style="width: 200px;">
             {% endfor %}
         </div>
 
-        <!-- Add Update and Delete links for each status message -->
-        <a href="{% url 'update_status' message.pk %}">Update</a> |
-        <a href="{% url 'delete_status' message.pk %}">Delete</a>
+        {% if user.is_authenticated and user.profile == profile %}
+            <!-- Update and delete options for the profile owner -->
+            <a href="{% url 'update_status' message.pk %}">Update</a> |
+            <a href="{% url 'delete_status' message.pk %}">Delete</a>
+        {% endif %}
     </li>
     {% empty %}
     <li>No status messages yet.</li>
     {% endfor %}
 </ul>
 
-<!-- Form to post a new status message (without file upload) -->
-<h3>Post a New Status Message</h3>
-<form method="post" action="{% url 'create_status' profile.pk %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="button-primary">Post Message</button>
-</form>
-
-<!-- Add buttons with improved styling -->
+<!-- Navigation back to profiles and update profile (only for profile owner) -->
 <div class="profile-actions">
     <a href="{% url 'show_all_profiles' %}" class="button-link">Back to all profiles</a>
-    <a href="{% url 'update_profile' profile.pk %}" class="button-link">Update Profile</a>
+    {% if user.is_authenticated and user.profile == profile %}
+        <a href="{% url 'update_profile' %}" class="button-link">Update Profile</a>
+    {% endif %}
 </div>
+
 {% endblock %}

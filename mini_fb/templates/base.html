@@ -10,17 +10,39 @@
 <body>
     <header>
         <h1>Mini Facebook</h1>
+     
+        <div class="user-status">
+            {% if user.is_authenticated %}
+                <p>Welcome, {{ user.username }}!</p>
+                <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; color: blue; cursor: pointer;">
+                        Logout
+                    </button>
+                </form>
+            {% else %}
+                <p><a href="{% url 'login' %}">Login</a> or <a href="{% url 'create_profile' %}">Create Profile</a></p>
+            {% endif %}
+        </div>
     </header>
+    
+    <!-- Navigation bar -->
     <nav>
         <ul>
             <li><a href="{% url 'show_all_profiles' %}">Profiles</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'show_profile' user.profile.pk %}">My Profile</a></li>
+                <li><a href="{% url 'update_profile' %}">Update Profile</a></li>
+                <li><a href="{% url 'friend_suggestions' %}">Friend Suggestions</a></li>
+                <li><a href="{% url 'news_feed' %}">News Feed</a></li>
+            {% endif %}
             <li><a href="{% url 'create_profile' %}">Create New Profile</a></li>
         </ul>
     </nav>
     
+    <!-- Main content area -->
     <main>
         {% block content %}{% endblock %}
     </main>
-    
 </body>
 </html>
