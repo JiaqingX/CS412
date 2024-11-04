@@ -32,9 +32,9 @@
             <li><a href="{% url 'show_all_profiles' %}">Profiles</a></li>
             {% if user.is_authenticated and user.profile_set.exists %}
                 <li><a href="{% url 'show_profile' user.profile_set.first.pk %}">My Profile</a></li>
-                <li><a href="{% url 'update_profile' %}">Update Profile</a></li> 
-                <li><a href="{% url 'friend_suggestions' %}">Friend Suggestions</a></li> 
-                <li><a href="{% url 'news_feed' %}">News Feed</a></li> 
+                <li><a href="{% url 'update_profile' user.profile_set.first.pk %}">Update Profile</a></li> 
+                <li><a href="{% url 'friend_suggestions' user.profile_set.first.pk %}">Friend Suggestions</a></li> 
+                <li><a href="{% url 'news_feed' user.profile_set.first.pk %}">News Feed</a></li> 
             {% else %}
                 <li><span>Profile not set up</span></li>
             {% endif %}
