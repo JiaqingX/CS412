@@ -30,11 +30,13 @@
     <nav>
         <ul>
             <li><a href="{% url 'show_all_profiles' %}">Profiles</a></li>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.profile.exists %}
                 <li><a href="{% url 'show_profile' user.profile.pk %}">My Profile</a></li>
                 <li><a href="{% url 'update_profile' %}">Update Profile</a></li>
-                <li><a href="{% url 'friend_suggestions' %}">Friend Suggestions</a></li>
-                <li><a href="{% url 'news_feed' %}">News Feed</a></li>
+                <li><a href="{% url 'friend_suggestions' user.profile.pk %}">Friend Suggestions</a></li>
+                <li><a href="{% url 'news_feed' user.profile.pk %}">News Feed</a></li>
+            {% else %}
+                <li><span>Profile not set up</span></li>
             {% endif %}
             <li><a href="{% url 'create_profile' %}">Create New Profile</a></li>
         </ul>
