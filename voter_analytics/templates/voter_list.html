@@ -1,0 +1,48 @@
+<!-- templates/voter_analytics/voter_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voter List</title>
+</head>
+<body>
+    <h1>Voter List</h1>
+
+
+    <form method="get" action="{% url 'voters' %}">
+        {{ form.as_p }}
+        <button type="submit">Filter</button>
+    </form>
+
+
+    <div>
+        {% if is_paginated %}
+            <div>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+
+    <ul>
+        {% for voter in page_obj %}
+            <li>
+                <a href="{% url 'voter' voter.id %}">{{ voter.first_name }} {{ voter.last_name }}</a> - {{ voter.party_affiliation }}
+                <p>Address: {{ voter.street_number }} {{ voter.street_name }}</p>
+                <p>Date of Birth: {{ voter.dob }}</p>
+                <p>Voter Score: {{ voter.voter_score }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!-- templates/voter_analytics/graphs.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voter Graphs</title>
+</head>
+<body>
+    <h1>Voter Graphs</h1>
+
+    <div>
+        {{ plot_div|safe }}
+    </div>
+
+    <a href="{% url 'voters' %}">Back to List</a>
+</body>
+</html>

@@ -21,11 +21,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Admin panel
-    path('', mini_fb_views.ShowAllProfilesView.as_view(), name='home'),  
-    path('restaurant/', include('restaurant.urls')),  # Restaurant application URL patterns
-    path('quotes/', include('quotes.urls')),  # Quotes application URL patterns
-    path('mini_fb/', include('mini_fb.urls')),  # Mini Facebook app URL patterns
+    path('admin/', admin.site.urls), 
+    path('', include('voter_analytics.urls')), 
+    path('restaurant/', include('restaurant.urls')), 
+    path('quotes/', include('quotes.urls')), 
+    path('mini_fb/', include('mini_fb.urls')),
 ]
 
 if settings.DEBUG:
