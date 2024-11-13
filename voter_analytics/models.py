@@ -17,23 +17,29 @@ class Voter(models.Model):
     v21primary = models.BooleanField(default=False)
     v22general = models.BooleanField(default=False)
     v23town = models.BooleanField(default=False)
-    voter_score = models.IntegerField()
+    voter_score = models.IntegerField(default=0)  
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.street_name}"
 
     @staticmethod
-    def load_data(file_path):
+    def load_data(file_path, batch_size=1000):
         import csv
 
         # Helper function to convert 'TRUE'/'FALSE' to boolean
         def parse_boolean(value):
             return value.strip().upper() == 'TRUE'
 
+        voters = []  
         with open(file_path, mode='r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
-            for row in reader:
-                Voter.objects.create(
+            for index, row in enumerate(reader):
+
+                voter_score_str = row.get('voter_score', '').strip()
+                voter_score = int(voter_score_str) if voter_score_str.isdigit() else 0
+
+
+                voter = Voter(
                     last_name=row['Last Name'],
                     first_name=row['First Name'],
                     street_number=row['Residential Address - Street Number'],
@@ -49,5 +55,17 @@ class Voter(models.Model):
                     v21primary=parse_boolean(row['v21primary']),
                     v22general=parse_boolean(row['v22general']),
                     v23town=parse_boolean(row['v23town']),
-                    voter_score=int(row['voter_score']),
+                    voter_score=voter_score,  
                 )
+                voters.append(voter)
+
+
+                if len(voters) >= batch_size:
+                    Voter.objects.bulk_create(voters)
+                    voters = [] 
+                    print(f"{index + 1} records loaded")
+
+
+            if voters:
+                Voter.objects.bulk_create(voters)
+                print(f"Final batch inserted, total {index + 1} records loaded")
