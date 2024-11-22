@@ -1,0 +1,8 @@
+<h1>Courses</h1>
+<ul>
+    {% for course in object_list %}
+    <li>
+        <a href="{% url 'course_detail' course.id %}">{{ course.course_name }}</a>
+    </li>
+    {% endfor %}
+</ul>

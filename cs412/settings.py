@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'restaurant',  # new app for hw4
     'mini_fb',     # new app for hw5
     'voter_analytics',
+    'project'
 ]
 
 MIDDLEWARE = [
