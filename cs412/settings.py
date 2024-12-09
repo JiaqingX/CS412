@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'restaurant',   # HW4 app
     'voter_analytics',
     'project',      # Main app
+    'mini_fb'
 ]
 
 MIDDLEWARE = [

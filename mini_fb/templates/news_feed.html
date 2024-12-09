@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="news-feed-container">
+    <h2>{{ profile.first_name }}'s News Feed</h2>
+
+    {% if news_feed %}
+        <ul class="status-updates">
+            {% for status in news_feed %}
+                <li class="status-item">
+                    <p><strong>{{ status.profile.first_name }}:</strong> {{ status.message }}</p>
+                    <p class="timestamp">{{ status.timestamp|date:"F j, Y, g:i a" }}</p>
+                    {% if status.get_images %}
+                        <div class="status-images">
+                            {% for image in status.get_images %}
+                                <img src="{{ image.image_file.url }}" alt="Status image" style="width: 150px; margin: 5px;">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No status updates yet.</p>
+    {% endif %}
+
+    <a href="{% url 'show_profile' profile.pk %}" class="button-link">Back to Profile</a>
+</div>
+{% endblock %}

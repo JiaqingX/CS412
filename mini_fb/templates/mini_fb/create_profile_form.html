@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Create a New Profile</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <h3>Account Information</h3>
+    {{ user_form.as_p }}  
+    
+    <h3>Profile Information</h3>
+    {{ profile_form.as_p }}  
+    
+    <button type="submit">Submit</button>
+</form>
+
+<a href="{% url 'show_all_profiles' %}">Back to Profiles</a>
+{% endblock %}
