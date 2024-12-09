@@ -65,6 +65,14 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
     template_name = 'project/course_detail.html'
     context_object_name = 'course'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course = self.get_object()
+        context['assignments'] = Assignment.objects.filter(course=course)
+        context['enrollments'] = Enrollment.objects.filter(course=course)
+        context['discussions'] = DiscussionThread.objects.filter(course=course)
+        return context
+
 
 # 作业相关视图
 class AssignmentListView(LoginRequiredMixin, ListView):
@@ -74,6 +82,13 @@ class AssignmentListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         course = get_object_or_404(Course, id=self.kwargs['course_id'])
         return Assignment.objects.filter(course=course)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # 将 course 传递到模板中
+        context['course'] = get_object_or_404(Course, id=self.kwargs['course_id'])
+        return context
+
 
 
 class AssignmentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -89,35 +104,59 @@ class AssignmentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         form.instance.course = get_object_or_404(Course, id=self.kwargs['course_id'])
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['course'] = get_object_or_404(Course, id=self.kwargs['course_id'])
+        return context
+
     def get_success_url(self):
         return reverse_lazy('assignment_list', kwargs={'course_id': self.kwargs['course_id']})
 
 
 # 注册相关视图
-class EnrollmentListView(LoginRequiredMixin, ListView):
+from django.shortcuts import get_object_or_404
+from django.views.generic.list import ListView
+from .models import Course, Enrollment
+
+class EnrollmentListView(ListView):
+    model = Enrollment
     template_name = 'project/enrollment_list.html'
-    context_object_name = 'enrollments'
 
     def get_queryset(self):
-        course = get_object_or_404(Course, id=self.kwargs['course_id'])
-        return Enrollment.objects.filter(course=course)
+        return Enrollment.objects.filter(course_id=self.kwargs['course_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['course'] = get_object_or_404(Course, id=self.kwargs['course_id'])
+        return context
 
 
-class EnrollmentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+
+from django.shortcuts import get_object_or_404, reverse
+from django.views.generic.edit import CreateView
+from .models import Enrollment, Course
+from .forms import EnrollmentForm
+
+class EnrollmentCreateView(CreateView):
     model = Enrollment
-    fields = ['student']
     template_name = 'project/enrollment_form.html'
-
-    def test_func(self):
-        course = get_object_or_404(Course, id=self.kwargs['course_id'])
-        return self.request.user == course.instructor
+    form_class = EnrollmentForm
 
     def form_valid(self, form):
-        form.instance.course = get_object_or_404(Course, id=self.kwargs['course_id'])
+        course = get_object_or_404(Course, id=self.kwargs['course_id'])
+        form.instance.course = course
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['course'] = get_object_or_404(Course, id=self.kwargs['course_id'])
+        return context
+
+    # 设置 success_url
     def get_success_url(self):
-        return reverse_lazy('enrollment_list', kwargs={'course_id': self.kwargs['course_id']})
+        return reverse('enrollment_list', kwargs={'course_id': self.kwargs['course_id']})
+
+
 
 
 # 成绩相关视图
@@ -131,31 +170,48 @@ class GradeListView(LoginRequiredMixin, ListView):
 
 
 # 讨论区相关视图
-class DiscussionThreadListView(LoginRequiredMixin, ListView):
+from django.shortcuts import get_object_or_404
+from django.views.generic.list import ListView
+from .models import Course, DiscussionThread
+
+class DiscussionThreadListView(ListView):
+    model = DiscussionThread
     template_name = 'project/discussion_list.html'
-    context_object_name = 'threads'
 
     def get_queryset(self):
-        course = get_object_or_404(Course, id=self.kwargs['course_id'])
-        return DiscussionThread.objects.filter(course=course)
+        return DiscussionThread.objects.filter(course_id=self.kwargs['course_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['course'] = get_object_or_404(Course, id=self.kwargs['course_id'])
+        return context
 
 
-class DiscussionThreadCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+
+from django.shortcuts import get_object_or_404
+from django.views.generic.edit import CreateView
+from .models import DiscussionThread, Course
+
+class DiscussionThreadCreateView(CreateView):
     model = DiscussionThread
-    fields = ['title']
+    fields = ['title', 'content'] 
     template_name = 'project/discussion_form.html'
+    
 
-    def test_func(self):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         course = get_object_or_404(Course, id=self.kwargs['course_id'])
-        return self.request.user == course.instructor
+        context['course'] = course  # 将 course 传递到模板上下文
+        return context
 
     def form_valid(self, form):
-        form.instance.course = get_object_or_404(Course, id=self.kwargs['course_id'])
+        course = get_object_or_404(Course, id=self.kwargs['course_id'])
+        form.instance.course = course
+        form.instance.created_by = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('discussion_list', kwargs={'course_id': self.kwargs['course_id']})
-
 
 # 通知相关视图
 class NotificationListView(LoginRequiredMixin, ListView):
