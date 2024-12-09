@@ -165,3 +165,82 @@ table th {
         padding: 8px 15px;
     }
 }
+
+/* 样式导航栏 */
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white; /* 调整导航链接的颜色 */
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* 样式 Logout 按钮 */
+.logout-form {
+    display: inline; /* 确保表单和其他链接在同一行 */
+}
+
+.logout-button {
+    background: none; /* 去除按钮默认背景 */
+    border: none; /* 去除按钮默认边框 */
+    color: white; /* 与导航链接一致的颜色 */
+    cursor: pointer; /* 鼠标指针样式 */
+    font: inherit; /* 继承父元素的字体 */
+    text-decoration: none;
+    padding: 0; /* 去除按钮内边距 */
+}
+
+.logout-button:hover {
+    text-decoration: underline; /* 鼠标悬停时样式 */
+}
+
+
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-messages {
+    background-color: #ffdddd;
+    color: #d8000c;
+    border: 1px solid #d8000c;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.login-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+.register-link {
+    margin-top: 15px;
+    text-align: center;
+}

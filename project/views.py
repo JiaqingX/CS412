@@ -18,23 +18,27 @@ class UserLoginView(LoginView):
 
 # 用户注销视图
 class UserLogoutView(LogoutView):
-    next_page = 'home'  # 注销后跳转到主页
+    next_page = 'login'  # 注销后跳转到主页
 
 
-# 用户注册视图
+from .forms import CustomUserCreationForm
+
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            group, created = Group.objects.get_or_create(name='students')
-            user.groups.add(group)
-            login(request, user)  # 自动登录
-            return redirect('home')  # 注册后跳转到主页
-    else:
-        form = UserCreationForm()
-    return render(request, 'project/register.html', {'form': form})
+            user = form.save(commit=False)
+            user.save()
+            
+            # 添加用户到选定的组
+            group = form.cleaned_data.get('group')
+            group.user_set.add(user)
 
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'project/register.html', {'form': form})
 
 # 自定义主页视图
 class HomeView(View):

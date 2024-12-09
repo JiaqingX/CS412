@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'quotes',       # HW3 app
     'restaurant',   # HW4 app
-    'mini_fb',      # HW5 app
     'voter_analytics',
     'project',      # Main app
 ]

@@ -1,18 +1,5 @@
 from django.db import models
-
-
-class User(models.Model):
-    ROLE_CHOICES = [
-        ('instructor', 'Instructor'),
-        ('student', 'Student'),
-    ]
-    username = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
-
-    def __str__(self):
-        return self.username
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -26,7 +13,11 @@ class Category(models.Model):
 class Course(models.Model):
     course_name = models.CharField(max_length=200)
     description = models.TextField()
-    instructor = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'instructor'})
+    instructor = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        limit_choices_to={'groups__name': 'instructors'}
+    )
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
@@ -35,7 +26,11 @@ class Course(models.Model):
 
 class Enrollment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'student'})
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        limit_choices_to={'groups__name': 'students'}
+    )
     enrollment_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -54,7 +49,11 @@ class Assignment(models.Model):
 
 class Grade(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-    student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'student'})
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        limit_choices_to={'groups__name': 'students'}
+    )
     score = models.FloatField()
     feedback = models.TextField(blank=True)
 
@@ -83,7 +82,11 @@ class Comment(models.Model):
 
 
 class Certificate(models.Model):
-    student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'student'})
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        limit_choices_to={'groups__name': 'students'}
+    )
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     issued_date = models.DateField(auto_now_add=True)
     certificate_code = models.CharField(max_length=20, unique=True)
@@ -93,7 +96,11 @@ class Certificate(models.Model):
 
 
 class Attendance(models.Model):
-    student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'student'})
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        limit_choices_to={'groups__name': 'students'}
+    )
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     date = models.DateField()
     status = models.BooleanField()  # True for Present, False for Absent
