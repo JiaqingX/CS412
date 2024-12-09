@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load custom_tags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Online Course Management{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Online Course Management</h1>
+        <nav>
+            <ul>
+                <!-- 公共链接 -->
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'course_list' %}">Courses</a></li>
+
+                <!-- 登录状态下的链接 -->
+                {% if user.is_authenticated %}
+                    {% if user|in_group:"instructors" %}
+                        <!-- Instructor 特定链接 -->
+                        <li><a href="{% url 'notification_list' %}">Notifications</a></li>
+                        <li><a href="{% url 'certificate_list' %}">Certificates</a></li>
+                    {% elif user|in_group:"students" %}
+                        <!-- Student 特定链接 -->
+                        <li><a href="{% url 'certificate_list' %}">My Certificates</a></li>
+                        <li><a href="{% url 'attendance_list' course_id=1 %}">Attendance</a></li>
+                    {% endif %}
+                    <!-- Logout 按钮 -->
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <!-- 未登录用户的链接 -->
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Online Course Management System</p>
+    </footer>
+</body>
+</html>

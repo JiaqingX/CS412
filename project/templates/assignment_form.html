@@ -1,0 +1,13 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Create Assignment{% endblock %}
+
+{% block content %}
+<h2>Create Assignment for {{ course.course_name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<a href="{% url 'assignment_list' course.id %}">Back to Assignments</a>
+{% endblock %}

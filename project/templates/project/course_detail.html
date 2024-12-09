@@ -1,3 +1,45 @@
-<h1>{{ object.course_name }}</h1>
-<p>{{ object.description }}</p>
-<h2>Instructor: {{ object.instructor.username }}</h2>
+{% extends 'project/base.html' %}
+
+{% block title %}Course Detail{% endblock %}
+
+{% block content %}
+<h2>{{ course.course_name }}</h2>
+<p>{{ course.description }}</p>
+<p><strong>Instructor:</strong> {{ course.instructor.username }}</p>
+
+<h3>Assignments</h3>
+<ul>
+    {% for assignment in assignments %}
+        <li>{{ assignment.title }} - Due: {{ assignment.due_date }}</li>
+    {% empty %}
+        <li>No assignments available.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'assignment_create' course.id %}">Add Assignment</a>
+
+<h3>Enrollments</h3>
+<ul>
+    {% for enrollment in enrollments %}
+        <li>{{ enrollment.student.username }} - Enrolled on {{ enrollment.enrollment_date }}</li>
+    {% empty %}
+        <li>No students enrolled in this course.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'enrollment_create' course.id %}">Enroll New Student</a>
+
+<h3>Discussions</h3>
+<ul>
+    {% for thread in discussions %}
+        <li>{{ thread.title }} - Created by {{ thread.created_by.username }}</li>
+    {% empty %}
+        <li>No discussion threads available.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'discussion_list' course.id %}">View All Discussions</a>
+<a href="{% url 'discussion_create' course.id %}">Add Discussion</a>
+
+<h3>Certificates</h3>
+<p><a href="{% url 'certificate_list' %}">View Certificates</a></p>
+
+<a href="{% url 'course_list' %}">Back to Courses</a>
+{% endblock %}

@@ -16,18 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from mini_fb import views as mini_fb_views  
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls), 
-    path('', include('voter_analytics.urls')), 
-    path('restaurant/', include('restaurant.urls')), 
-    path('quotes/', include('quotes.urls')), 
+    path('admin/', admin.site.urls),
+    path('', include('project.urls')),  # Set project app as the default
+    path('voter_analytics/', include('voter_analytics.urls')),
+    path('restaurant/', include('restaurant.urls')),
+    path('quotes/', include('quotes.urls')),
     path('mini_fb/', include('mini_fb.urls')),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

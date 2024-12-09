@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,9 +26,7 @@ SECRET_KEY = "django-insecure-a0db1&r+@ofodg(d7g@rh)sa8#=38w6g@=iehpgu+3==b#zrv1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
-######## cs412/settings.py ########
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']  # Allow all hosts for development. Update for production.
 
 
 # Application definition
@@ -39,11 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'quotes',       # new app for hw3
-    'restaurant',  # new app for hw4
-    'mini_fb',     # new app for hw5
+    'quotes',       # HW3 app
+    'restaurant',   # HW4 app
+    'mini_fb',      # HW5 app
     'voter_analytics',
-    'project'
+    'project',      # Main app
 ]
 
 MIDDLEWARE = [
@@ -62,7 +61,7 @@ ROOT_URLCONF = "cs412.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [],  # Optional: Add custom template directories if needed
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -123,18 +122,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-import os
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-LOGIN_REDIRECT_URL = '/mini_fb/'
+# Authentication settings
+LOGIN_URL = '/login/'  # Redirect to login page if not authenticated
+LOGIN_REDIRECT_URL = '/courses/'  # Redirect to course list after login
+LOGOUT_REDIRECT_URL = '/login/'  # Redirect to login page after logout

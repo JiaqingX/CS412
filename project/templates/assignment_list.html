@@ -1,0 +1,14 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Assignments{% endblock %}
+
+{% block content %}
+<h2>Assignments for {{ course.course_name }}</h2>
+<ul>
+    {% for assignment in object_list %}
+        <li>{{ assignment.title }} - Due: {{ assignment.due_date }}</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'assignment_create' course.id %}">Create New Assignment</a>
+<a href="{% url 'course_detail' course.id %}">Back to Course</a>
+{% endblock %}

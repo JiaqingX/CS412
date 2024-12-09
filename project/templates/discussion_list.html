@@ -1,0 +1,13 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Discussions{% endblock %}
+
+{% block content %}
+<h2>Discussions for {{ course.course_name }}</h2>
+<ul>
+    {% for thread in object_list %}
+        <li><a href="#">{{ thread.title }}</a> - Created by {{ thread.created_by.username }}</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'course_detail' course.id %}">Back to Course</a>
+{% endblock %}

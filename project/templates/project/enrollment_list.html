@@ -1,0 +1,14 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Enrollments{% endblock %}
+
+{% block content %}
+<h2>Enrollments for {{ course.course_name }}</h2>
+<ul>
+    {% for enrollment in object_list %}
+        <li>{{ enrollment.student.username }} - Enrolled on {{ enrollment.enrollment_date }}</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'enrollment_create' course.id %}">Enroll New Student</a>
+<a href="{% url 'course_detail' course.id %}">Back to Course</a>
+{% endblock %}
