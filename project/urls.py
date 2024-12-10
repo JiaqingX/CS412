@@ -4,7 +4,7 @@ from .views import (
     UserLoginView,
     UserLogoutView,
     register_view,
-    HomeView,  # 修改后的主页视图
+    HomeView,  
     CourseListView, 
     CourseDetailView, 
     AssignmentListView, 
@@ -25,7 +25,7 @@ from .views import (
 
 urlpatterns = [
     # Home
-    path('', HomeView.as_view(), name='home'),  # 修改为登录和注册页面
+    path('', HomeView.as_view(), name='home'), 
 
     # User management
     path('login/', UserLoginView.as_view(), name='login'),

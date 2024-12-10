@@ -26,14 +26,12 @@ class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'project/home.html'
 
 
-# 用户登录视图
 class UserLoginView(LoginView):
     template_name = 'project/login.html'
 
 
-# 用户注销视图
 class UserLogoutView(LogoutView):
-    next_page = 'login'  # 注销后跳转到主页
+    next_page = 'login'  
 
 
 from .forms import CustomUserCreationForm
@@ -45,7 +43,7 @@ def register_view(request):
             user = form.save(commit=False)
             user.save()
             
-            # 添加用户到选定的组
+
             group = form.cleaned_data.get('group')
             group.user_set.add(user)
 
@@ -55,11 +53,11 @@ def register_view(request):
         form = CustomUserCreationForm()
     return render(request, 'project/register.html', {'form': form})
 
-# 自定义主页视图
+
 class HomeView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('course_list')  # 登录后重定向到课程列表
+            return redirect('course_list') 
         login_form = AuthenticationForm()
         register_form = UserCreationForm()
         return render(request, 'project/home.html', {
@@ -68,7 +66,6 @@ class HomeView(View):
         })
 
 
-# 课程相关视图
 class CourseListView(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'project/course_list.html'
@@ -96,7 +93,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
         context['grades'] = Grade.objects.filter(assignment__course=course)
         return context
 
-# 作业相关视图
+# Assignment
 class AssignmentListView(LoginRequiredMixin, ListView):
     template_name = 'project/assignment_list.html'
     context_object_name = 'assignments'
@@ -107,7 +104,7 @@ class AssignmentListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # 将 course 传递到模板中
+
         context['course'] = get_object_or_404(Course, id=self.kwargs['course_id'])
         return context
 
@@ -135,7 +132,7 @@ class AssignmentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return reverse_lazy('assignment_list', kwargs={'course_id': self.kwargs['course_id']})
 
 
-# 注册相关视图
+# Enrollment
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from .models import Course, Enrollment
@@ -182,7 +179,7 @@ class EnrollmentCreateView(LoginRequiredMixin, IsInstructorMixin, CreateView):
         # Redirect to the course enrollment list after successful form submission
         return reverse('enrollment_list', kwargs={'course_id': self.kwargs['course_id']})
 
-# 成绩相关视图
+# Grade
 class GradeListView(LoginRequiredMixin, ListView):
     template_name = 'project/grade_list.html'
     context_object_name = 'grades'
@@ -192,7 +189,7 @@ class GradeListView(LoginRequiredMixin, ListView):
         return Grade.objects.filter(assignment__course=course)
 
 
-# 讨论区相关视图
+# Discussion
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from .models import Course, DiscussionThread
@@ -224,7 +221,7 @@ class DiscussionThreadCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course = get_object_or_404(Course, id=self.kwargs['course_id'])
-        context['course'] = course  # 将 course 传递到模板上下文
+        context['course'] = course  
         return context
 
     def form_valid(self, form):
@@ -236,7 +233,7 @@ class DiscussionThreadCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy('discussion_list', kwargs={'course_id': self.kwargs['course_id']})
 
-# 通知相关视图
+# Notification
 class NotificationListView(LoginRequiredMixin, ListView):
     template_name = 'project/notification_list.html'
     context_object_name = 'notifications'
