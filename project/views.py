@@ -93,7 +93,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
         context['resources'] = Resource.objects.filter(course=course)  # Add resources
         context['notifications'] = Notification.objects.filter(user=self.request.user)  # Add notifications for user
         context['attendance_records'] = Attendance.objects.filter(course=course)  # Add attendance records
-
+        context['grades'] = Grade.objects.filter(assignment__course=course)
         return context
 
 # 作业相关视图
@@ -158,29 +158,29 @@ from django.shortcuts import get_object_or_404, reverse
 from django.views.generic.edit import CreateView
 from .models import Enrollment, Course
 from .forms import EnrollmentForm
-
 from .mixins import IsInstructorMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class EnrollmentCreateView(LoginRequiredMixin, IsInstructorMixin, CreateView):
     model = Enrollment
-    fields = ['student']
+    form_class = EnrollmentForm  # Use form_class only
     template_name = 'project/enrollment_form.html'
-    form_class = EnrollmentForm
 
     def form_valid(self, form):
+        # Set the course instance from the URL
         course = get_object_or_404(Course, id=self.kwargs['course_id'])
         form.instance.course = course
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Add the course to the context for rendering
         context['course'] = get_object_or_404(Course, id=self.kwargs['course_id'])
         return context
 
     def get_success_url(self):
+        # Redirect to the course enrollment list after successful form submission
         return reverse('enrollment_list', kwargs={'course_id': self.kwargs['course_id']})
-
-
 
 # 成绩相关视图
 class GradeListView(LoginRequiredMixin, ListView):
@@ -245,7 +245,7 @@ class NotificationListView(LoginRequiredMixin, ListView):
         return Notification.objects.filter(user=self.request.user)
 
 
-# 证书相关视图
+# Certificate
 class CertificateListView(LoginRequiredMixin, ListView):
     template_name = 'project/certificate_list.html'
     context_object_name = 'certificates'
@@ -254,14 +254,12 @@ class CertificateListView(LoginRequiredMixin, ListView):
         return Certificate.objects.filter(student=self.request.user)
 
 
-# 出勤相关视图
+# Attendance 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, CreateView
 from .models import Attendance, Course
 from .forms import AttendanceForm
 from .mixins import IsInstructorMixin
-
-
 
 class AttendanceListView(ListView):
     template_name = 'project/attendance_list.html'
@@ -296,7 +294,7 @@ class AttendanceCreateView(LoginRequiredMixin, IsInstructorMixin, CreateView):
     def get_success_url(self):
         return reverse('attendance_list', kwargs={'course_id': self.kwargs['course_id']})
     
-# 资源相关视图
+# resource
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
 from .models import Resource, Course
@@ -307,14 +305,14 @@ class ResourceListView(ListView):
     context_object_name = 'resources'
 
     def get_queryset(self):
-        # 获取与课程相关的资源
+      
         course = get_object_or_404(Course, id=self.kwargs['course_id'])
-        self.course = course  # 存储 course 对象以供模板使用
+        self.course = course  
         return Resource.objects.filter(course=course)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # 将 course 对象传递到模板中
+        
         context['course'] = self.course
         return context
 
@@ -348,7 +346,6 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'project/comment_form.html'
 
     def form_valid(self, form):
-        # 获取当前讨论线程
         thread = get_object_or_404(DiscussionThread, id=self.kwargs['thread_id'])
         form.instance.thread = thread
         form.instance.created_by = self.request.user
