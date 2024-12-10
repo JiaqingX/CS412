@@ -1,20 +1,24 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Home{% endblock %}
+{% block title %}Home{% endblock %} <!-- Set the page title -->
 
 {% block content %}
 <div class="container">
-    <h2>Welcome to Online Course Management</h2>
-    {% if user.is_authenticated %}
-        <p>You are logged in as <strong>{{ user.username }}</strong>.</p>
-        {% if user.groups.first %}
-            <p>Your role: <strong>{{ user.groups.first.name }}</strong>.</p>
+    <h2>Welcome to Online Course Management</h2> <!-- Welcome message -->
+
+    {% if user.is_authenticated %} <!-- Check if the user is logged in -->
+        <p>You are logged in as <strong>{{ user.username }}</strong>.</p> <!-- Display the logged-in username -->
+        
+        {% if user.groups.first %} <!-- Check if the user belongs to any group -->
+            <p>Your role: <strong>{{ user.groups.first.name }}</strong>.</p> <!-- Display the user's role -->
         {% else %}
-            <p>Your role: <strong>Student</strong>.</p>
+            <p>Your role: <strong>Student</strong>.</p> <!-- Default role if no group is assigned -->
         {% endif %}
+        
+        <!-- Link to view the list of courses -->
         <a href="{% url 'course_list' %}" class="btn btn-primary">View Courses</a>
     {% else %}
-        <p>You are not logged in. <a href="{% url 'login' %}">Login here</a>.</p>
+        <p>You are not logged in. <a href="{% url 'login' %}">Login here</a>.</p> <!-- Message for unauthenticated users -->
     {% endif %}
 </div>
 {% endblock %}

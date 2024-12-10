@@ -1,10 +1,12 @@
-{% extends "base.html" %}
+{% extends "base.html" %} <!-- Extend the base template -->
 
 {% block content %}
-<h2>Register</h2>
+<h2>Register</h2> <!-- Heading for the registration page -->
+
+<!-- Registration form -->
 <form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Register</button>
+  {% csrf_token %} <!-- CSRF token for form security -->
+  {{ form.as_p }} <!-- Render the form fields as paragraphs -->
+  <button type="submit">Register</button> <!-- Submit button to complete registration -->
 </form>
 {% endblock %}

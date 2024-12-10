@@ -1,20 +1,24 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Notifications{% endblock %}
+{% block title %}Notifications{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>Notifications</h2>
+<h2>Notifications</h2> <!-- Heading for the notifications page -->
+
 <ul>
-    {% for notification in notifications %}
+    {% for notification in notifications %} <!-- Loop through the list of notifications -->
         <li>
+            <!-- Display the notification message and its creation timestamp -->
             {{ notification.message }} - {{ notification.created_at|date:"M d, Y H:i" }}
-            {% if notification.is_read %}
+            {% if notification.is_read %} <!-- Check if the notification is read -->
                 (Read)
             {% else %}
-                (Unread)
+                (Unread) <!-- Display status if the notification is unread -->
             {% endif %}
         </li>
     {% endfor %}
 </ul>
+
+<!-- Link to navigate back to the home page -->
 <a href="{% url 'home' %}">Back to Home</a>
 {% endblock %}

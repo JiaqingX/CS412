@@ -1,14 +1,19 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Assignments{% endblock %}
+{% block title %}Assignments{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>Assignments for {{ course.course_name }}</h2>
+<h2>Assignments for {{ course.course_name }}</h2> <!-- Heading displaying the course name -->
+
 <ul>
-    {% for assignment in object_list %}
-        <li>{{ assignment.title }} - Due: {{ assignment.due_date }}</li>
+    {% for assignment in object_list %} <!-- Loop through the list of assignments -->
+        <li>{{ assignment.title }} - Due: {{ assignment.due_date }}</li> <!-- Display assignment title and due date -->
     {% endfor %}
 </ul>
+
+<!-- Link to create a new assignment -->
 <a href="{% url 'assignment_create' course.id %}">Create New Assignment</a>
+
+<!-- Link to navigate back to the course details -->
 <a href="{% url 'course_detail' course.id %}">Back to Course</a>
 {% endblock %}

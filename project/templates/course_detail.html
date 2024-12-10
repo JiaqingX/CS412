@@ -1,82 +1,82 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Course Detail{% endblock %}
+{% block title %}Course Detail{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>{{ course.course_name }}</h2>
-<p>{{ course.description }}</p>
-<p><strong>Instructor:</strong> {{ course.instructor.username }}</p>
+<h2>{{ course.course_name }}</h2> <!-- Display the course name as the main heading -->
+<p>{{ course.description }}</p> <!-- Display the course description -->
+<p><strong>Instructor:</strong> {{ course.instructor.username }}</p> <!-- Display the instructor's username -->
 
-<h3>Assignments</h3>
+<h3>Assignments</h3> <!-- Section for assignments -->
 <ul>
-    {% for assignment in assignments %}
-        <li>{{ assignment.title }} - Due: {{ assignment.due_date }}</li>
+    {% for assignment in assignments %} <!-- Loop through the assignments -->
+        <li>{{ assignment.title }} - Due: {{ assignment.due_date }}</li> <!-- Display assignment title and due date -->
     {% empty %}
-        <li>No assignments available.</li>
+        <li>No assignments available.</li> <!-- Message if no assignments are available -->
     {% endfor %}
 </ul>
-<a href="{% url 'assignment_create' course.id %}">Add Assignment</a>
+<a href="{% url 'assignment_create' course.id %}">Add Assignment</a> <!-- Link to add a new assignment -->
 
-<h3>Enrollments</h3>
+<h3>Enrollments</h3> <!-- Section for enrollments -->
 <ul>
-    {% for enrollment in enrollments %}
-        <li>{{ enrollment.student.username }} - Enrolled on {{ enrollment.enrollment_date }}</li>
+    {% for enrollment in enrollments %} <!-- Loop through the enrollments -->
+        <li>{{ enrollment.student.username }} - Enrolled on {{ enrollment.enrollment_date }}</li> <!-- Display student username and enrollment date -->
     {% empty %}
-        <li>No students enrolled in this course.</li>
+        <li>No students enrolled in this course.</li> <!-- Message if no enrollments are available -->
     {% endfor %}
 </ul>
-<a href="{% url 'enrollment_create' course.id %}">Enroll New Student</a>
+<a href="{% url 'enrollment_create' course.id %}">Enroll New Student</a> <!-- Link to enroll a new student -->
 
-<h3>Discussions</h3>
+<h3>Discussions</h3> <!-- Section for discussion threads -->
 <ul>
-    {% for thread in discussions %}
-        <li>{{ thread.title }} - Created by {{ thread.created_by.username }}</li>
+    {% for thread in discussions %} <!-- Loop through the discussion threads -->
+        <li>{{ thread.title }} - Created by {{ thread.created_by.username }}</li> <!-- Display thread title and creator's username -->
     {% empty %}
-        <li>No discussion threads available.</li>
+        <li>No discussion threads available.</li> <!-- Message if no discussions are available -->
     {% endfor %}
 </ul>
-<a href="{% url 'discussion_list' course.id %}">View All Discussions</a>
-<a href="{% url 'discussion_create' course.id %}">Add Discussion</a>
+<a href="{% url 'discussion_list' course.id %}">View All Discussions</a> <!-- Link to view all discussions -->
+<a href="{% url 'discussion_create' course.id %}">Add Discussion</a> <!-- Link to add a new discussion -->
 
-<h3>Attendance</h3>
+<h3>Attendance</h3> <!-- Section for attendance records -->
 <ul>
-    {% for record in attendance_records %}
-        <li>{{ record.date }} - {{ record.student.username }} - {% if record.status %}Present{% else %}Absent{% endif %}</li>
+    {% for record in attendance_records %} <!-- Loop through the attendance records -->
+        <li>{{ record.date }} - {{ record.student.username }} - {% if record.status %}Present{% else %}Absent{% endif %}</li> <!-- Display attendance date, student username, and status -->
     {% empty %}
-        <li>No attendance records available.</li>
+        <li>No attendance records available.</li> <!-- Message if no attendance records are available -->
     {% endfor %}
 </ul>
-<p><a href="{% url 'attendance_list' course.id %}">View All Attendance Records</a></p>
+<p><a href="{% url 'attendance_list' course.id %}">View All Attendance Records</a></p> <!-- Link to view all attendance records -->
 
-<h3>Grades</h3>
+<h3>Grades</h3> <!-- Section for grades -->
 <ul>
-    {% for grade in grades %}
-        <li>{{ grade.assignment.title }} - {{ grade.grade }}</li>
+    {% for grade in grades %} <!-- Loop through the grades -->
+        <li>{{ grade.assignment.title }} - {{ grade.grade }}</li> <!-- Display assignment title and grade -->
     {% empty %}
-        <li>No grades available.</li>
+        <li>No grades available.</li> <!-- Message if no grades are available -->
     {% endfor %}
 </ul>
 
-<h3>Resources</h3>
+<h3>Resources</h3> <!-- Section for resources -->
 <ul>
-    {% for resource in resources %}
+    {% for resource in resources %} <!-- Loop through the resources -->
         <li>
-            {{ resource.title }}
+            {{ resource.title }} <!-- Display resource title -->
             {% if resource.file %}
-                - <a href="{{ resource.file.url }}">Download</a>
+                - <a href="{{ resource.file.url }}">Download</a> <!-- Link to download the file if available -->
             {% endif %}
             {% if resource.url %}
-                - <a href="{{ resource.url }}">Visit</a>
+                - <a href="{{ resource.url }}">Visit</a> <!-- Link to visit the resource URL if available -->
             {% endif %}
         </li>
     {% empty %}
-        <li>No resources available.</li>
+        <li>No resources available.</li> <!-- Message if no resources are available -->
     {% endfor %}
 </ul>
-<p><a href="{% url 'resource_list' course.id %}">View All Resources</a></p>
+<p><a href="{% url 'resource_list' course.id %}">View All Resources</a></p> <!-- Link to view all resources -->
 
-<h3>Certificates</h3>
-<p><a href="{% url 'certificate_list' %}">View Certificates</a></p>
+<h3>Certificates</h3> <!-- Section for certificates -->
+<p><a href="{% url 'certificate_list' %}">View Certificates</a></p> <!-- Link to view certificates -->
 
-<a href="{% url 'course_list' %}">Back to Courses</a>
+<a href="{% url 'course_list' %}">Back to Courses</a> <!-- Link to navigate back to the courses list -->
 {% endblock %}

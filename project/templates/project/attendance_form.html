@@ -1,13 +1,17 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Add Attendance{% endblock %}
+{% block title %}Add Attendance{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>Add Attendance for {{ course.course_name }}</h2>
+<h2>Add Attendance for {{ course.course_name }}</h2> <!-- Heading displaying the course name -->
+
+<!-- Form to add attendance -->
 <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Attendance</button>
+    {% csrf_token %} <!-- CSRF token for form security -->
+    {{ form.as_p }} <!-- Render the form fields as paragraphs -->
+    <button type="submit">Save Attendance</button> <!-- Submit button to save attendance -->
 </form>
+
+<!-- Link to navigate back to the attendance list -->
 <a href="{% url 'attendance_list' course.id %}">Back to Attendance</a>
 {% endblock %}

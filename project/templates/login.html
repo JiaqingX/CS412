@@ -1,33 +1,34 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Login{% endblock %}
+{% block title %}Login{% endblock %} <!-- Set the page title -->
 
 {% block content %}
 <div class="login-container">
-    <h2>Login</h2>
-    <!-- 显示表单错误 -->
+    <h2>Login</h2> <!-- Heading for the login page -->
+
+    <!-- Display form errors, if any -->
     {% if form.errors %}
         <div class="error-messages">
             <ul>
-                {% for field, errors in form.errors.items %}
-                    {% for error in errors %}
-                        <li>{{ field|capfirst }}: {{ error }}</li>
+                {% for field, errors in form.errors.items %} <!-- Loop through form errors -->
+                    {% for error in errors %} <!-- Display each error -->
+                        <li>{{ field|capfirst }}: {{ error }}</li> <!-- Capitalize field name and show the error message -->
                     {% endfor %}
                 {% endfor %}
             </ul>
         </div>
     {% endif %}
 
-    <!-- 登录表单 -->
+    <!-- Login form -->
     <form method="post" class="login-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn">Login</button>
+        {% csrf_token %} <!-- CSRF token for form security -->
+        {{ form.as_p }} <!-- Render the form fields as paragraphs -->
+        <button type="submit" class="btn">Login</button> <!-- Submit button for login -->
     </form>
 
-    <!-- 注册提示 -->
+    <!-- Registration suggestion -->
     <p class="register-link">
-        Don't have an account? <a href="{% url 'register' %}">Register here</a>.
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>. <!-- Link to the registration page -->
     </p>
 </div>
 {% endblock %}

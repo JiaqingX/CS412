@@ -1,15 +1,16 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Courses{% endblock %}
+{% block title %}Courses{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>Available Courses</h2>
+<h2>Available Courses</h2> <!-- Heading for the courses list -->
 <ul>
-    {% for course in object_list %}
+    {% for course in object_list %} <!-- Loop through the list of courses -->
         <li>
+            <!-- Link to the course detail page with course name and description -->
             <a href="{% url 'course_detail' course.id %}">{{ course.course_name }}</a> - {{ course.description }}
         </li>
     {% endfor %}
 </ul>
-<a href="{% url 'home' %}">Back to Home</a>
+<a href="{% url 'home' %}">Back to Home</a> <!-- Link to navigate back to the home page -->
 {% endblock %}

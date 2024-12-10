@@ -1,13 +1,17 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Create Discussion Thread{% endblock %}
+{% block title %}Create Discussion Thread{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-  <h1>Create a New Discussion Thread</h1>
+  <h1>Create a New Discussion Thread</h1> <!-- Heading for creating a discussion thread -->
+
+  <!-- Form to create a new discussion thread -->
   <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
+    {% csrf_token %} <!-- CSRF token for form security -->
+    {{ form.as_p }} <!-- Render the form fields as paragraphs -->
+    <button type="submit">Submit</button> <!-- Submit button to submit the form -->
   </form>
+
+  <!-- Link to navigate back to the list of discussions -->
   <a href="{% url 'discussion_list' course.id %}">Back to Discussions</a>
 {% endblock %}

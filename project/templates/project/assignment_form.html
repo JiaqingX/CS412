@@ -1,13 +1,17 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Create Assignment{% endblock %}
+{% block title %}Create Assignment{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>Create Assignment for {{ course.course_name }}</h2>
+<h2>Create Assignment for {{ course.course_name }}</h2> <!-- Heading with the course name -->
+
+<!-- Form to create a new assignment -->
 <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
+    {% csrf_token %} <!-- CSRF token for security -->
+    {{ form.as_p }} <!-- Render the form fields as paragraphs -->
+    <button type="submit">Save</button> <!-- Submit button for the form -->
 </form>
+
+<!-- Link to navigate back to the assignment list for the course -->
 <a href="{% url 'assignment_list' course.id %}">Back to Assignments</a>
 {% endblock %}

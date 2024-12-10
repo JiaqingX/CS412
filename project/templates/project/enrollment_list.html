@@ -1,14 +1,20 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Enrollments{% endblock %}
+{% block title %}Enrollments{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>Enrollments for {{ course.course_name }}</h2>
+<h2>Enrollments for {{ course.course_name }}</h2> <!-- Heading for enrollments specific to the course -->
+
 <ul>
-    {% for enrollment in object_list %}
+    {% for enrollment in object_list %} <!-- Loop through the list of enrollments -->
+        <!-- Display the student's username and enrollment date -->
         <li>{{ enrollment.student.username }} - Enrolled on {{ enrollment.enrollment_date }}</li>
     {% endfor %}
 </ul>
+
+<!-- Link to navigate to the form for enrolling a new student -->
 <a href="{% url 'enrollment_create' course.id %}">Enroll New Student</a>
+
+<!-- Link to navigate back to the course detail page -->
 <a href="{% url 'course_detail' course.id %}">Back to Course</a>
 {% endblock %}

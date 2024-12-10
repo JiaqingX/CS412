@@ -1,13 +1,17 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Discussions{% endblock %}
+{% block title %}Discussions{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>Discussions for {{ course.course_name }}</h2>
+<h2>Discussions for {{ course.course_name }}</h2> <!-- Heading for discussions specific to the course -->
 <ul>
-    {% for thread in object_list %}
-        <li><a href="#">{{ thread.title }}</a> - Created by {{ thread.created_by.username }}</li>
+    {% for thread in object_list %} <!-- Loop through the list of discussion threads -->
+        <li>
+            <!-- Display thread title with a placeholder link and the username of the creator -->
+            <a href="#">{{ thread.title }}</a> - Created by {{ thread.created_by.username }}
+        </li>
     {% endfor %}
 </ul>
+<!-- Link to navigate back to the course detail page -->
 <a href="{% url 'course_detail' course.id %}">Back to Course</a>
 {% endblock %}

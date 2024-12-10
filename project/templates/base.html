@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
-    {% load custom_tags %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Online Course Management{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    {% load static %} <!-- Load the static template tag -->
+    {% load custom_tags %} <!-- Load custom template tags -->
+    <meta charset="UTF-8"> <!-- Set character encoding -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Set viewport for responsive design -->
+    <title>{% block title %}Online Course Management{% endblock %}</title> <!-- Set the page title -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}"> <!-- Link to the static CSS file -->
 </head>
 <body>
     <header>
-        <h1>Online Course Management</h1>
+        <h1>Online Course Management</h1> <!-- Header title -->
         <nav>
             <ul>
-                <!-- 公共链接 -->
+                <!-- Public links for all users -->
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'course_list' %}">Courses</a></li>
 
-                <!-- 登录状态下的链接 -->
+                <!-- Links for authenticated users -->
                 {% if user.is_authenticated %}
                     {% if user|in_group:"instructors" %}
-                        <!-- Instructor 特定链接 -->
+                        <!-- Links specific to instructors -->
                         <li><a href="{% url 'notification_list' %}">Notifications</a></li>
                         <li><a href="{% url 'certificate_list' %}">Certificates</a></li>
                     {% elif user|in_group:"students" %}
-                        <!-- Student 特定链接 -->
+                        <!-- Links specific to students -->
                         <li><a href="{% url 'certificate_list' %}">My Certificates</a></li>
                         <li><a href="{% url 'attendance_list' course_id=1 %}">Attendance</a></li>
                     {% endif %}
-                    <!-- Logout 按钮 -->
+                    <!-- Logout button -->
                     <li>
                         <form method="post" action="{% url 'logout' %}" class="logout-form">
-                            {% csrf_token %}
-                            <button type="submit" class="logout-button">Logout</button>
+                            {% csrf_token %} <!-- CSRF token for security -->
+                            <button type="submit" class="logout-button">Logout</button> <!-- Submit button for logout -->
                         </form>
                     </li>
                 {% else %}
-                    <!-- 未登录用户的链接 -->
+                    <!-- Links for unauthenticated users -->
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'register' %}">Register</a></li>
                 {% endif %}
@@ -44,9 +44,8 @@
         </nav>
     </header>
     <main>
-        {% block content %}
+        {% block content %} <!-- Content block to be overridden in child templates -->
         {% endblock %}
     </main>
-   
 </body>
 </html>

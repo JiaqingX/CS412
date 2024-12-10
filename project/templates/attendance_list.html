@@ -1,16 +1,25 @@
-{% extends 'project/base.html' %}
+{% extends 'project/base.html' %} <!-- Extend the base template -->
 
-{% block title %}Attendance{% endblock %}
+{% block title %}Attendance{% endblock %} <!-- Set the page title -->
 
 {% block content %}
-<h2>Attendance for {{ course.course_name }}</h2>
+<h2>Attendance for {{ course.course_name }}</h2> <!-- Heading displaying the course name -->
+
 <ul>
-    {% for record in attendance_records %}
-        <li>{{ record.date }} - {{ record.student.username }} - {% if record.status %}Present{% else %}Absent{% endif %}</li>
+    {% for record in attendance_records %} <!-- Loop through the attendance records -->
+        <!-- Display date, student username, and attendance status (Present/Absent) -->
+        <li>{{ record.date }} - {{ record.student.username }} - 
+            {% if record.status %}Present{% else %}Absent{% endif %}
+        </li>
     {% empty %}
+        <!-- Message if no attendance records are available -->
         <li>No attendance records available.</li>
     {% endfor %}
 </ul>
+
+<!-- Link to add a new attendance record -->
 <a href="{% url 'attendance_add' course.id %}">Add Attendance</a>
+
+<!-- Link to navigate back to the course details -->
 <a href="{% url 'course_detail' course.id %}">Back to Course</a>
 {% endblock %}
