@@ -17,8 +17,10 @@ from .views import (
     CommentCreateView,
     CertificateListView,
     AttendanceListView,
+    AttendanceCreateView,
     NotificationListView,
     ResourceListView,
+    ResourceCreateView,
 )
 
 urlpatterns = [
@@ -55,10 +57,13 @@ urlpatterns = [
 
     # Attendance
     path('courses/<int:course_id>/attendance/', AttendanceListView.as_view(), name='attendance_list'),
+    path('courses/<int:course_id>/attendance/add/', AttendanceCreateView.as_view(), name='attendance_add'),
+
     
     # Notifications
     path('notifications/', NotificationListView.as_view(), name='notification_list'),
 
     # Resources
     path('courses/<int:course_id>/resources/', ResourceListView.as_view(), name='resource_list'),
+    path('courses/<int:course_id>/resources/add/', ResourceCreateView.as_view(), name='resource_add'),
 ]

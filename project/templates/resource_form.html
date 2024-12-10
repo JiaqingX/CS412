@@ -1,0 +1,13 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Add Resource{% endblock %}
+
+{% block content %}
+<h2>Add Resource for {{ course.course_name }}</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Resource</button>
+</form>
+<a href="{% url 'resource_list' course.id %}">Back to Resources</a>
+{% endblock %}

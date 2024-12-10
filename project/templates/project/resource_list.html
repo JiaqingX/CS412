@@ -1,0 +1,29 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Resources{% endblock %}
+
+{% block content %}
+<h2>Resources for {{ course.course_name }}</h2>
+
+<!-- Resource list -->
+<ul>
+    {% for resource in resources %}
+        <li>
+            {{ resource.title }}
+            {% if resource.file %}
+                <a href="{{ resource.file.url }}">Download</a>
+            {% endif %}
+            {% if resource.url %}
+                <a href="{{ resource.url }}" target="_blank" rel="noopener noreferrer">Visit</a>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>No resources available.</li>
+    {% endfor %}
+</ul>
+
+<!-- Links for adding resources and navigating back -->
+<a href="{% url 'resource_add' course.id %}">Add Resource</a>
+<a href="{% url 'course_detail' course.id %}">Back to Course</a>
+
+{% endblock %}

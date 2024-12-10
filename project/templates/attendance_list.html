@@ -1,0 +1,16 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Attendance{% endblock %}
+
+{% block content %}
+<h2>Attendance for {{ course.course_name }}</h2>
+<ul>
+    {% for record in attendance_records %}
+        <li>{{ record.date }} - {{ record.student.username }} - {% if record.status %}Present{% else %}Absent{% endif %}</li>
+    {% empty %}
+        <li>No attendance records available.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'attendance_add' course.id %}">Add Attendance</a>
+<a href="{% url 'course_detail' course.id %}">Back to Course</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Add Attendance{% endblock %}
+
+{% block content %}
+<h2>Add Attendance for {{ course.course_name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Attendance</button>
+</form>
+<a href="{% url 'attendance_list' course.id %}">Back to Attendance</a>
+{% endblock %}

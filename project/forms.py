@@ -29,3 +29,19 @@ class EnrollmentForm(forms.ModelForm):
     class Meta:
         model = Enrollment
         fields = ['student', 'course'] 
+
+from django import forms
+from .models import Attendance
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = ['student', 'date', 'status']
+
+from django import forms
+from .models import Resource
+
+class ResourceForm(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = ['title', 'file', 'url']

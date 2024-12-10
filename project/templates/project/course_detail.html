@@ -38,6 +38,34 @@
 <a href="{% url 'discussion_list' course.id %}">View All Discussions</a>
 <a href="{% url 'discussion_create' course.id %}">Add Discussion</a>
 
+<h3>Attendance</h3>
+<ul>
+    {% for record in attendance_records %}
+        <li>{{ record.date }} - {{ record.student.username }} - {% if record.status %}Present{% else %}Absent{% endif %}</li>
+    {% empty %}
+        <li>No attendance records available.</li>
+    {% endfor %}
+</ul>
+<p><a href="{% url 'attendance_list' course.id %}">View All Attendance Records</a></p>
+
+<h3>Resources</h3>
+<ul>
+    {% for resource in resources %}
+        <li>
+            {{ resource.title }}
+            {% if resource.file %}
+                - <a href="{{ resource.file.url }}">Download</a>
+            {% endif %}
+            {% if resource.url %}
+                - <a href="{{ resource.url }}">Visit</a>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>No resources available.</li>
+    {% endfor %}
+</ul>
+<p><a href="{% url 'resource_list' course.id %}">View All Resources</a></p>
+
 <h3>Certificates</h3>
 <p><a href="{% url 'certificate_list' %}">View Certificates</a></p>
 

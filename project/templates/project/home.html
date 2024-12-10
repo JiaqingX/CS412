@@ -1,37 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Course Management</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Online Course Management</h1>
-        <nav>
-            <ul>
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <div class="container">
-            <h2>Welcome to Online Course Management</h2>
-            <section>
-                <h3>Login</h3>
-                <form method="post" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    {{ login_form.as_p }}
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </form>
-            </section>
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 Online Course Management System</p>
-    </footer>
-</body>
-</html>
+{% extends 'project/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome to Online Course Management</h2>
+    {% if user.is_authenticated %}
+        <p>You are logged in as <strong>{{ user.username }}</strong>.</p>
+        {% if user.groups.first %}
+            <p>Your role: <strong>{{ user.groups.first.name }}</strong>.</p>
+        {% else %}
+            <p>Your role: <strong>Student</strong>.</p>
+        {% endif %}
+        <a href="{% url 'course_list' %}" class="btn btn-primary">View Courses</a>
+    {% else %}
+        <p>You are not logged in. <a href="{% url 'login' %}">Login here</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}
